@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}{{ planting.date }}: {{ planting.seed.cultivar }}{% endblock %}
+{% block body %}
+<div class="container">
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th scope="row">Name</th>
+            <th>{{ planting.seed.cultivar.category.common_name }}</th>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <th><em>{{ planting.seed.cultivar.category.name }}</em></th>
+        </tr>
+{% if planting.seed.cultivar.category.common_name != planting.seed.cultivar.name %}
+        <tr>
+            <th scope="row">Cultivar</th>
+            <th>{{ planting.seed.cultivar.name }}</th>
+        </tr>
+{% endif %}
+        <tr>
+            <th scope="row">Seed Source</th>
+            <th>{{ planting.seed.source.name }}</th>
+        </tr>
+        <tr>
+            <th scope="row">Planting Date</th>
+            <th>{{ planting.date }}</th>
+        </tr>
+    </tbody>
+</table>
+</div>
+<div class="container">
+<div class="card">
+    <div class="card-body">
+    <h4 class="card-title">Cultivar Information</h2>
+{% for p in planting.seed.cultivar.description.splitlines() %}
+    <p class="card-text">{{ p }}</p>
+{% endfor %}
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+    <h3 class="card-title">Planting Notes</h2>
+{% for p in planting.notes.splitlines() %}
+    <p class="card-text">{{ p }}</p>
+{% endfor %}
+    </div>
+</div>
+</div>
+<div class="container">
+{% for img_row in images | batch(3, False) %}
+<div class="row">
+{% for img in img_row %}
+    <div class="col">
+{% if img %}
+    <a href="{{ img.image.url }}"><img src="{{ img.image.url }}" class="img-fluid" alt="{{ img.description }}" /></a>
+{% endif %}
+    </div>
+{% endfor %}
+</div>
+{% endfor %}
+</div>
+{% endblock %}
