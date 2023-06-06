@@ -124,4 +124,4 @@ class PlantingImage(models.Model):
             # save the new name
             self._original_image_file = self.image.name
             # strip the metadata
-            subprocess.run(['exiftool', '-all:all=', '-overwrite_original', self.image.path])
+            subprocess.run(['exiftool', '-gps*=', '-overwrite_original', self.image.path])
