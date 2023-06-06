@@ -26,7 +26,7 @@ class Planting(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         planting = self.get_object()
-        images = models.PlantingImage.objects.filter(parent=planting.id)
+        images = models.PlantingImage.objects.filter(parent=planting.id).order_by('timestamp')
         return Response(
             {
                 'planting': planting,
