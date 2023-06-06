@@ -98,11 +98,12 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = '/static/'
-if platform.node() == 'wynne':
+if DEBUG:
     MEDIA_ROOT = '/home/zeke/git/renenutet/uploads'
 else:
     MEDIA_ROOT = '/srv/www/renenutet.flowerysong.com/uploads'
+    STATIC_ROOT = '/srv/www/renenutet.flowerysong.com/static'
+STATIC_URL = '/static/'
 MEDIA_URL = 'uploads/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
