@@ -20,7 +20,15 @@
 {% endif %}
         <tr>
             <th scope="row">Seed Source</th>
-            <th>{{ planting.seed.source.name }}</th>
+            <th>
+{% if planting.seed.source_planting %}
+                <a href="{{ url('planting', args=[planting.seed.source_planting.id]) }}">
+{% else %}
+                <a href="{{ planting.seed.source.url }}">
+{% endif %}
+                {{ planting.seed.source.name }}
+                </a>
+            </th>
         </tr>
         <tr>
             <th scope="row">Planting Date</th>
