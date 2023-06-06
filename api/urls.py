@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from rest_framework import serializers
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from . import models
 
@@ -12,7 +12,7 @@ class CategorySerializer(serializers.ModelSerializer):
     friendly_name = serializers.CharField(read_only=True, source='__str__')
 
 
-class CategoryViewSet(ModelViewSet):
+class CategoryViewSet(ReadOnlyModelViewSet):
     queryset = models.Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -23,7 +23,7 @@ class CultivarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CultivarViewSet(ModelViewSet):
+class CultivarViewSet(ReadOnlyModelViewSet):
     queryset = models.Cultivar.objects.all()
     serializer_class = CultivarSerializer
 
@@ -34,7 +34,7 @@ class SeedPacketSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SeedPacketViewSet(ModelViewSet):
+class SeedPacketViewSet(ReadOnlyModelViewSet):
     queryset = models.SeedPacket.objects.all()
     serializer_class = SeedPacketSerializer
 
