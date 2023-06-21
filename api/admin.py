@@ -7,6 +7,8 @@ from .models import (
     SeedPacket,
     Planting,
     PlantingImage,
+    Product,
+    ProductImage,
 )
 
 for mod in (
@@ -16,5 +18,7 @@ for mod in (
     SeedPacket,
     Planting,
     PlantingImage,
+    Product,
+    ProductImage,
 ):
     admin.site.register(mod)

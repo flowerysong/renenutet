@@ -8,6 +8,13 @@ from django.utils import timezone
 from mptt.models import MPTTModel, TreeForeignKey
 
 
+def _image_path(instance, filename):
+    ext = filename.split('.')[-1]
+    if len(ext) > 4:
+        ext = 'jpg'
+    return f'images/{uuid.uuid4()}.{ext}'
+
+
 class Base(models.Model):
     class Meta:
         abstract = True
@@ -16,6 +23,29 @@ class Base(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class BaseImage(models.Model):
+    class Meta:
+        abstract = True
+
+    timestamp = models.DateField(default=date.today)
+    image = models.ImageField(upload_to=_image_path)
+    description = models.TextField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # save the filename so that we know whether it's new later on
+        self._original_image_file = self.image.name
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.image and self.image.name != self._original_image_file:
+            # save the new name
+            self._original_image_file = self.image.name
+            # strip the metadata
+            subprocess.run(['exiftool', '-gps*=', '-overwrite_original', self.image.path])
 
 
 class Category(MPTTModel):
@@ -70,6 +100,7 @@ class SeedSource(Base):
 
 class SeedPacket(models.Model):
     class Meta:
+        ordering = ['-active', '-date', 'cultivar']
         verbose_name_plural = 'Seed packets'
 
     date = models.DateField(default=date.today)
@@ -84,6 +115,9 @@ class SeedPacket(models.Model):
 
 
 class Planting(models.Model):
+    class Meta:
+        ordering = ['-active', '-date', 'seed']
+
     date = models.DateField(default=date.today)
     seed = models.ForeignKey(SeedPacket, on_delete=models.PROTECT)
     active = models.BooleanField(default=True)
@@ -93,35 +127,15 @@ class Planting(models.Model):
         return '{} ({})'.format(self.seed, self.date)
 
 
-class PlantingNote(models.Model):
+class PlantingImage(BaseImage):
     parent = models.ForeignKey(Planting, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(default=timezone.now)
-    note = models.TextField()
 
 
-def _image_path(instance, filename):
-    ext = filename.split('.')[-1]
-    if len(ext) > 4:
-        ext = 'jpg'
-    return f'images/{uuid.uuid4()}.{ext}'
+class Product(Base):
+    parents = models.ManyToManyField(Planting)
+    date = models.DateField(default=date.today)
+    notes = models.TextField(blank=True)
 
 
-class PlantingImage(models.Model):
-    parent = models.ForeignKey(Planting, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(default=timezone.now)
-    image = models.ImageField(upload_to=_image_path)
-    description = models.TextField()
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # save the filename so that we know whether it's new later on
-        self._original_image_file = self.image.name
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        if self.image and self.image.name != self._original_image_file:
-            # save the new name
-            self._original_image_file = self.image.name
-            # strip the metadata
-            subprocess.run(['exiftool', '-gps*=', '-overwrite_original', self.image.path])
+class ProductImage(BaseImage):
+    parent = models.ForeignKey(Product, on_delete=models.CASCADE)
