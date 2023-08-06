@@ -11,7 +11,7 @@ class Index(generics.ListAPIView):
     template_name = "index.html"
 
     def get(self, request, *args, **kwargs):
-        data = self.queryset.filter(active=True).order_by('seed__cultivar__category__common_name', 'seed__cultivar__name')
+        data = self.get_queryset().filter(active=True).order_by('seed__cultivar__category__common_name', 'seed__cultivar__name')
         return Response(
             {
                 'data': data,
