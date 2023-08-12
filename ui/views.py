@@ -33,3 +33,19 @@ class Planting(generics.RetrieveAPIView):
                 'images': images,
             }
         )
+
+
+class Product(generics.RetrieveAPIView):
+    queryset = models.Product.objects.all()
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = "product.html"
+
+    def get(self, request, *args, **kwargs):
+        product = self.get_object()
+        images = models.ProductImage.objects.filter(parent=product.id).order_by('timestamp')
+        return Response(
+            {
+                'product': product,
+                'images': images,
+            }
+        )
