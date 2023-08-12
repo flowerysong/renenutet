@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.date }}: {{ product.name }}{% endblock %}
+{% block body %}
+<div class="container">
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th scope="row">Name</th>
+            <th>{{ product.name }}</th>
+        </tr>
+        <tr>
+            <th scope="row">Date</th>
+            <th>{{ product.date }}</th>
+        </tr>
+    </tbody>
+</table>
+</div>
+<div class="container">
+<div class="card">
+    <div class="card-body">
+    <h3 class="card-title">Notes</h2>
+{% for p in product.notes.splitlines() %}
+    <p class="card-text">{{ p }}</p>
+{% endfor %}
+    </div>
+</div>
+</div>
+<div class="container">
+{% for img_row in images | batch(3, False) %}
+<div class="row">
+{% for img in img_row %}
+    <div class="col">
+{% if img %}
+    <a href="{{ img.image.url }}"><img src="{{ img.image.url }}" class="img-fluid" alt="{{ img.description }}" /></a>
+{% endif %}
+    </div>
+{% endfor %}
+</div>
+{% endfor %}
+</div>
+{% endblock %}
