@@ -12,6 +12,12 @@
             <th scope="row">Date</th>
             <th>{{ product.date }}</th>
         </tr>
+{% for p in product.parents.all() %}
+        <tr>
+            <th scope="row">{% if loop.first %}Associated Plantings{% endif %}</th>
+            <th><a href="{{ url('planting', args=[p.id]) }}">{{ p.seed.cultivar }}</a></th>
+        </tr>
+{% endfor %}
     </tbody>
 </table>
 </div>
