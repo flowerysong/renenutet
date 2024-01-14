@@ -108,6 +108,7 @@ class SeedPacket(models.Model):
     cultivar = models.ForeignKey(Cultivar, on_delete=models.PROTECT)
     source = models.ForeignKey(SeedSource, on_delete=models.PROTECT)
     source_planting = models.ForeignKey('Planting', on_delete=models.PROTECT, null=True, blank=True)
+    url = models.URLField(max_length=256, blank=True)
     active = models.BooleanField(default=True)
     notes = models.TextField(blank=True)
 

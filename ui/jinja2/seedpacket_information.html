@@ -25,6 +25,8 @@
             <th>
 {% if packet.source_planting %}
                 <a href="{{ url('planting', args=[packet.source_planting.id]) }}">
+{% elif packet.url %}
+                <a href="{{ packet.url }}">
 {% else %}
                 <a href="{{ packet.source.url }}">
 {% endif %}
