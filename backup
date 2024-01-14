@@ -1,0 +1,4 @@
+#!/bin/bash
+
+scp vereveel.marwnad.com:/srv/www/renenutet.flowerysong.com/renenutet/db.sqlite3 db.$(date +%F).sqlite3
+rsync -rv vereveel.marwnad.com:/srv/www/renenutet.flowerysong.com/uploads/ uploads/
