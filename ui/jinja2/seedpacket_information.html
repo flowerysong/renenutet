@@ -1,0 +1,34 @@
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th scope="row">Name</th>
+            <th>{{ packet.cultivar.category.common_name }}</th>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <th><em>{{ packet.cultivar.category.name }}</em></th>
+        </tr>
+{% if packet.cultivar.category.common_name != packet.cultivar.name %}
+        <tr>
+            <th scope="row">Cultivar</th>
+            <th>{{ packet.cultivar.name }}</th>
+        </tr>
+{% endif %}
+        <tr>
+            <th scope="row">Seed Source</th>
+            <th>
+{% if packet.source_planting %}
+                <a href="{{ url('planting', args=[packet.source_planting.id]) }}">
+{% else %}
+                <a href="{{ packet.source.url }}">
+{% endif %}
+                {{ packet.source.name }}
+                </a>
+            </th>
+        </tr>
+        <tr>
+            <th scope="row">Packet Date</th>
+            <th>{{ packet.date }}</th>
+        </tr>
+    </tbody>
+</table>

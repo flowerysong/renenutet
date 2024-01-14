@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Seed Packets{% endblock %}
+{% block body %}
+<div class="container">
+<table class="table">
+<thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Date</th>
+        <th scope="col">Actions</th>
+    </tr>
+</thead>
+<tbody>
+{% for packet in data %}
+    <tr>
+        <th><a href="{{ url('seedpacket', args=[packet.id]) }}">{{ packet.cultivar }}</a></th>
+        <th>{{ packet.date }}</th>
+        <th><a href="{{ url('admin:api_seedpacket_change', args=[packet.id]) }}"><i class="bi bi-pencil-square"></i></a></th>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ packet.date }}: {{ packet.cultivar }}{% endblock %}
+{% block body %}
+<div class="container">
+{% include 'seedpacket_information.html' %}
+</div>
+<div class="container">
+{% set cultivar = packet.cultivar %}
+{% include 'cultivar_information.html' %}
+<div class="card">
+    <div class="card-body">
+    <h3 class="card-title">Packet Notes</h2>
+{% for p in packet.notes.splitlines() %}
+    <p class="card-text">{{ p }}</p>
+{% endfor %}
+    </div>
+</div>
+</div>
+{% endblock %}

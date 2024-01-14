@@ -5,10 +5,10 @@ from rest_framework.response import Response
 from api import models
 
 
-class Index(generics.ListAPIView):
+class PlantingIndex(generics.ListAPIView):
     queryset = models.Planting.objects.all()
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = "index.html"
+    template_name = 'planting_index.html'
 
     def get(self, request, *args, **kwargs):
         data = self.get_queryset().filter(active=True).order_by('seed__cultivar__category__common_name', 'seed__cultivar__name')
@@ -19,10 +19,24 @@ class Index(generics.ListAPIView):
         )
 
 
+class SeedPacketIndex(generics.ListAPIView):
+    queryset = models.SeedPacket.objects.all()
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'seedpacket_index.html'
+
+    def get(self, request, *args, **kwargs):
+        data = self.get_queryset().filter(active=True).order_by('cultivar__category__common_name', 'cultivar__name')
+        return Response(
+            {
+                'data': data,
+            }
+        )
+
+
 class Planting(generics.RetrieveAPIView):
     queryset = models.Planting.objects.all()
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = "planting.html"
+    template_name = 'planting.html'
 
     def get(self, request, *args, **kwargs):
         planting = self.get_object()
@@ -38,7 +52,7 @@ class Planting(generics.RetrieveAPIView):
 class Product(generics.RetrieveAPIView):
     queryset = models.Product.objects.all()
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = "product.html"
+    template_name = 'product.html'
 
     def get(self, request, *args, **kwargs):
         product = self.get_object()
@@ -47,5 +61,19 @@ class Product(generics.RetrieveAPIView):
             {
                 'product': product,
                 'images': images,
+            }
+        )
+
+
+class SeedPacket(generics.RetrieveAPIView):
+    queryset = models.SeedPacket.objects.all()
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'seedpacket.html'
+
+    def get(self, request, *args, **kwargs):
+        packet = self.get_object()
+        return Response(
+            {
+                'packet': packet,
             }
         )
