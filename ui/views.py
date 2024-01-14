@@ -19,6 +19,20 @@ class PlantingIndex(generics.ListAPIView):
         )
 
 
+class ProductIndex(generics.ListAPIView):
+    queryset = models.Product.objects.all()
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'product_index.html'
+
+    def get(self, request, *args, **kwargs):
+        data = self.get_queryset().order_by('date')
+        return Response(
+            {
+                'data': data,
+            }
+        )
+
+
 class SeedPacketIndex(generics.ListAPIView):
     queryset = models.SeedPacket.objects.all()
     renderer_classes = [TemplateHTMLRenderer]

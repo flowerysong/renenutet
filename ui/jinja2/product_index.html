@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Products{% endblock %}
+{% block body %}
+<div class="container">
+<table class="table">
+<thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Date</th>
+        <th scope="col">Actions</th>
+    </tr>
+</thead>
+<tbody>
+{% for product in data %}
+    <tr>
+        <th><a href="{{ url('product', args=[product.id]) }}">{{ product.name }}</a></th>
+        <th>{{ product.date }}</th>
+        <th><a href="{{ url('admin:api_product_change', args=[product.id]) }}"><i class="bi bi-pencil-square"></i></a></th>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+<p>{{ data | length }} products</p>
+</div>
+{% endblock %}
