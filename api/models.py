@@ -82,6 +82,7 @@ class Cultivar(Base):
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     description = models.TextField()
+    aliases = models.JSONField(default=list)
 
     def __str__(self):
         cat = self.category.cn()

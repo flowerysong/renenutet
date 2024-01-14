@@ -14,6 +14,12 @@
             <th>{{ packet.cultivar.name }}</th>
         </tr>
 {% endif %}
+{% for alias in packet.cultivar.aliases | sort %}
+        <tr>
+            <th scope="row">{% if loop.first %}Aliases{% endif %}</th>
+            <th>{{ alias }}</th>
+        </tr>
+{% endfor %}
         <tr>
             <th scope="row">Seed Source</th>
             <th>
