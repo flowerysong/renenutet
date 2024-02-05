@@ -93,6 +93,7 @@ class Cultivar(Base):
 
 class SeedSource(Base):
     class Meta:
+        ordering = ['name']
         verbose_name_plural = 'Seed sources'
 
     url = models.URLField(max_length=256, blank=True)
