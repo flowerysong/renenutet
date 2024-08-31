@@ -135,6 +135,7 @@ class PlantingImage(BaseImage):
 
 
 class Product(Base):
+    name = models.CharField(max_length=512, unique=False)
     parents = models.ManyToManyField(Planting)
     date = models.DateField(default=date.today)
     notes = models.TextField(blank=True)
